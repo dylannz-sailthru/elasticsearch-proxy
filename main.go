@@ -21,7 +21,7 @@ import (
 )
 
 func main() {
-	err := godotenv.Load(".env.default", ".env")
+	err := godotenv.Load(".env.default")
 	if err != nil {
 		logrus.Fatal(err)
 	}
