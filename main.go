@@ -107,6 +107,10 @@ func (rt *RoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	req.Header.Del("X-Forwarded-For")
 	rt.Signer.SignRequest(req)
 	res, err := http.DefaultTransport.RoundTrip(req)
+	if err != nil {
+		logrus.Errorf("[%s] %s: %s", rt.Env, req.URL.String(), err.Error())
+		return nil, err
+	}
 	msg := fmt.Sprintf("[%s] %s %s", rt.Env, res.Status, req.URL.String())
 	if res.StatusCode >= 400 {
 		logrus.Error(msg)
