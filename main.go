@@ -74,14 +74,14 @@ func main() {
 		}
 
 		wg.Add(1)
-		go func() {
+		go func(envName string) {
 			defer wg.Done()
 			m := http.NewServeMux()
 			m.HandleFunc("/", proxy.ServeHTTP)
 			listen := ":" + listenPort
-			logrus.Info("listening on ", listen)
+			logrus.Infof("[%s] listening on %s", envName, listen)
 			logrus.Fatal(http.ListenAndServe(listen, m))
-		}()
+		}(v)
 	}
 	wg.Wait()
 }
